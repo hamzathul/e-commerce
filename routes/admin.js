@@ -36,5 +36,11 @@ router.post('/add-product', upload.single('image'), (req, res) => {
   });
 });
 
+router.get('/delete-product/:id',(req, res)=>{
+  let proId = req.params.id  //to get the id from the get method
+  productHelper.deleteProduct(proId).then((response)=>{
+    res.redirect('/admin/')
+  })
+})
 
 module.exports = router;
