@@ -2,6 +2,7 @@ var db = require('../config/connection')
 var collection = require('../config/collections')
 const bcrypt = require('bcrypt')
 const { resolve, reject } = require('promise')
+const { ObjectId } = require('mongodb')
 var objectId = require('mongodb').ObjectId
 
 module.exports = {
@@ -40,6 +41,10 @@ module.exports = {
         })
     },
     addToCart:(proId, userId)=>{
+        let proObj = {
+            item: new ObjectId(proId),
+            quanity:1,
+        }
         return new Promise(async(resolve, reject)=>{
             let userCart = await db.get().collection(collection.CART_COLLECTION).findOne({user:new objectId(userId)})
             if(userCart){
