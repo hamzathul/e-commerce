@@ -2,7 +2,8 @@ var db = require('../config/connection')
 var collection = require('../config/collections');
 const { resolve, reject } = require('promise');
 var objectId = require('mongodb').ObjectId
-const fs = require('fs')
+const fs = require('fs');
+const { response } = require('../app');
 
 
 module.exports = {
@@ -36,5 +37,28 @@ module.exports = {
                 resolve(response)
             })
         })
+    },
+
+    getProductDetails:(proId)=>{
+        return new Promise((resolve, reject)=>{
+            db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id: new objectId(proId)}).then((product)=>{
+                resolve(product)
+            })
+        })
+    },
+    updateProduct:(proId, proDetails)=>{
+        return new Promise((resolve, reject)=>{
+            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:new objectId(proId)},{
+                $set:{
+                    name: proDetails.name,
+                    description: proDetails.description,
+                    price: proDetails.price,
+                    category: proDetails.category
+                }
+            }).then((response)=>{
+                resolve()
+            })
+        })
     }
+
 };
