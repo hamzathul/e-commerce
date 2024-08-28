@@ -3,6 +3,7 @@ var router = express.Router();
 var productHelper = require('../helpers/product-helpers');
 const productHelpers = require('../helpers/product-helpers');
 const multer  = require('multer')
+const fs = require('fs')
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './public/product-images')
@@ -49,10 +50,30 @@ router.get('/edit-product/:id',async (req, res)=>{
   res.render('admin/edit-product',{product})
 })
 
-router.post('/edit-product/:id',(req, res)=>{
-  productHelpers.updateProduct(req.params.id, req.body).then(()=>{
-    res.redirect('/admin')
-  })
-})
+router.post('/edit-product/:id', upload.single('image'), async (req, res) => {
+  const productId = req.params.id;
+  const updatedProductData = req.body;
+
+  if (req.file) {
+      // If a new image is uploaded, delete the old image
+      const product = await productHelpers.getProductDetails(productId);
+      const oldImagePath = './public/product-images/' + product.image;
+      fs.unlink(oldImagePath, (err) => {
+          if (err) {
+              console.error("Failed to delete old image file:", err);
+          } else {
+              console.log("Old image file deleted:", oldImagePath);
+          }
+      });
+
+      // Set the new image filename in the updated product data
+      updatedProductData.image = req.file.filename;
+  }
+
+  productHelpers.updateProduct(productId, updatedProductData).then(() => {
+      res.redirect('/admin');
+  });
+});
+
 
 module.exports = router;
