@@ -101,6 +101,13 @@ module.exports = {
                         foreignField:'_id',
                         as:'product'
                     }
+                },
+                {
+                    $project:{
+                        item:1,
+                        quantity:1,
+                        product:{$arrayElemAt:['$product', 0]}
+                    }
                 }
             ]).toArray()
             resolve(cartItems)
