@@ -12,6 +12,7 @@
                             class="card-img-top" style="width:inherit;height:300px" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{this.name}}</h5>
+                            <p class="card-text">₹ {{this.price}}</p>
                             <p class="card-text">{{this.description}}</p>
                             {{!-- <a href="/add-to-cart/{{this._id}}" class="btn btn-primary">Add to cart</a> --}}
                             <button onclick="addToCart('{{this._id}}')" class="btn btn-primary">Add to Cart</button>

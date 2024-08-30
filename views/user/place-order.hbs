@@ -1,0 +1,118 @@
+
+    <div class="container">
+        <!-- Left Section -->
+        <div class="left-section">
+            <h2>Enter Delivery Details</h2>
+            <form>
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" placeholder="Enter your address">
+                
+                <label for="pincode">Pincode</label>
+                <input type="text" id="pincode" name="pincode" placeholder="Enter your pincode">
+                
+                <label for="mobile">Mobile</label>
+                <input type="text" id="mobile" name="mobile" placeholder="Enter your mobile number">
+            </form>
+        </div>
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <div class="payment-box">
+                <p>Total Amount: Rs.3456</p>
+                <p>Payment method</p>
+                <div>
+                    <input type="radio" id="cod" name="payment" value="COD" checked>
+                    <label for="cod">COD</label>
+                </div>
+                <div>
+                    <input type="radio" id="online" name="payment" value="Online">
+                    <label for="online">Online payment</label>
+                </div>
+                <button class="checkout-button">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex; /* Using Flexbox to create two sections */
+    justify-content: space-between;
+}
+
+.left-section {
+    width: 60%;
+}
+
+.right-section {
+    width: 35%;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.left-section form {
+    display: flex;
+    flex-direction: column;
+}
+
+.left-section label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.left-section input {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.payment-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    margin-top: 70px;
+}
+
+.payment-box p {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.payment-box div {
+    margin-bottom: 10px;
+}
+
+.checkout-button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.checkout-button:hover {
+    background-color: #0056b3;
+}
+
+</style>

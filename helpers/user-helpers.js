@@ -3,6 +3,8 @@ var collection = require('../config/collections')
 const bcrypt = require('bcrypt')
 const { resolve, reject } = require('promise')
 const { ObjectId } = require('mongodb')
+const { promise } = require('bcrypt/promises')
+const collections = require('../config/collections')
 var objectId = require('mongodb').ObjectId
 
 module.exports = {
@@ -51,14 +53,14 @@ module.exports = {
                 let proExist = userCart.products.findIndex(product=> product.item==proId)
                 console.log(proExist)
                 if(proExist!=-1){
-                    db.get().collection(collection.CART_COLLECTION).updateOne({'products.item': new objectId(proId) },
+                    db.get().collection(collection.CART_COLLECTION).updateOne({user:new objectId(userId), 'products.item': new objectId(proId) },
                     {
                         $inc:{'products.$.quantity':1}
                     }
                     ).then(()=>{
                         resolve()
                     })
-                } else{
+                    } else{
                     db.get().collection(collection.CART_COLLECTION).updateOne({user:new objectId(userId)},{
                         $push:{products:proObj}
                     }).then((response)=>{
@@ -122,5 +124,28 @@ module.exports = {
             }
             resolve(count)
         })
-    }
+    },
+    changeProductQuantity:(details)=>{
+        details.count = parseInt(details.count)
+        return new Promise((resolve, reject)=>{
+            if(details.count==-1 && details.quantity==1){
+                db.get().collection(collections.CART_COLLECTION).updateOne({_id: new objectId(details.cart)},
+                {
+                    $pull:{products:{item:new objectId(details.product)}}
+                }
+                ).then((response)=>{
+                resolve({removeProduct:true})
+                })
+            } else{
+            db.get().collection(collection.CART_COLLECTION).updateOne({_id:new objectId(details.cart), 'products.item': new objectId(details.product) },
+                    {
+                       $inc:{'products.$.quantity':details.count}
+                    }
+                    ).then((response)=>{
+                        resolve(true)
+                    })
+            }
+        })
+    },
+    
 }
