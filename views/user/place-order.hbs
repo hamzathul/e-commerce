@@ -3,7 +3,7 @@
         <!-- Left Section -->
         <div class="left-section">
             <h2>Enter Delivery Details</h2>
-            <form>
+            <form action="" id="checkout-form">
                 <label for="address">Address</label>
                 <input type="text" id="address" name="address" placeholder="Enter your address">
                 
@@ -12,26 +12,46 @@
                 
                 <label for="mobile">Mobile</label>
                 <input type="text" id="mobile" name="mobile" placeholder="Enter your mobile number">
-            </form>
+                <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+            
         </div>
 
         <!-- Right Section -->
         <div class="right-section">
             <div class="payment-box">
-                <p>Total Amount: Rs.3456</p>
+                <p>Total Amount: Rs.{{total}}</p>
                 <p>Payment method</p>
                 <div>
-                    <input type="radio" id="cod" name="payment" value="COD" checked>
+                    <input type="radio" id="cod" name="payment-method" value="COD" checked>
                     <label for="cod">COD</label>
                 </div>
                 <div>
-                    <input type="radio" id="online" name="payment" value="Online">
+                    <input type="radio" id="online" name="payment-method" value="Online">
                     <label for="online">Online payment</label>
                 </div>
-                <button class="checkout-button">Checkout</button>
+                <button type="submit" class="checkout-button">Checkout</button>
             </div>
         </div>
+        </form>
     </div>
+
+    <script>
+        $("#checkout-form").submit((e)=>{
+            e.preventDefault()
+            $.ajax({
+                url:'/place-order',
+                method:'post',
+                data:$('#checkout-form').serialize(),
+                success:(response)=>{
+                    alert(response)
+                    if(response.status){
+                        location.href = ''
+                    }
+                }
+            })
+
+        })
+    </script>
 
 
 <style>
