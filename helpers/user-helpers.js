@@ -209,7 +209,7 @@ module.exports = {
             }
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response)=>{
                 db.get().collection(collection.CART_COLLECTION).deleteOne({user: new ObjectId(order.userId)})
-                resolve()
+                resolve(response._id)
             })
         })
     },
@@ -217,6 +217,44 @@ module.exports = {
         return new Promise(async(resolve, reject)=>{
             let cart = await db.get().collection(collection.CART_COLLECTION).findOne({user: new objectId(userId)})
             resolve(cart.products)
+        })
+    },
+    getUserOrders:(userId)=>{
+        return new Promise(async(resolve, reject)=>{
+            let orders = await db.get().collection(collection.ORDER_COLLECTION).find({userId:new objectId(userId)}).toArray()
+            resolve(orders)
+        })
+    },
+    getOrderProducts:(orderId)=>{
+        return new Promise(async(resolve, reject)=>{
+            let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match:{_id: new objectId(orderId)}
+                },
+                {
+                    $unwind:'$products'
+                },
+                {
+                    $project:{
+                        item:'$products.item',
+                        quantity:'$products.quantity'
+                    }
+                },
+                {
+                    $lookup:{
+                        from:collection.PRODUCT_COLLECTION,
+                        localField:'item',
+                        foreignField:'_id',
+                        as:'product'
+                    }
+                },
+                {
+                    $project:{
+                        item:1, quantity:1, product:{$arrayElemAt:['$product', 0]}
+                    }
+                }
+            ]).toArray()
+            resolve(orderItems)
         })
     }
 }
