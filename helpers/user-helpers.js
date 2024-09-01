@@ -187,8 +187,13 @@ module.exports = {
 
 
             ]).toArray()
-            // console.log(total[0].total)
-            resolve(total[0].total)
+            if(total.length>0){
+                // console.log(total[0].total)
+                resolve(total[0].total)
+            } else{
+                resolve(0)
+            }
+            
         })       
     },
     placeOrder:(order, products, total)=>{

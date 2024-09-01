@@ -80,7 +80,13 @@ router.get('/add-to-cart/:id', (req, res)=>{
 
 router.post('/change-product-quantity/', (req, res, next)=>{
   userHelpers.changeProductQuantity(req.body).then(async(response)=>{
-    response.total = await userHelpers.getTotalAmount(req.body.user)  
+    const totalAmount = await userHelpers.getTotalAmount(req.body.user)  
+    console.log(totalAmount)
+    if(totalAmount == -1){
+      response.cartEmpty = true
+    } else{
+      response.total = totalAmount
+    }
     res.json(response)
   })
 })

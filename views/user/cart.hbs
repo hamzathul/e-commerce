@@ -1,5 +1,6 @@
 <section>
     <div class="container">
+        {{#if products.length}}
         <table class="table mt-5">
             <thead>
                 <tr>
@@ -34,6 +35,9 @@
         </table>
         <h3 class="text-end mr-4">Total: ₹<span id="total">{{totalValue}}</span></h3><br>
         <a href="/place-order" class="btn btn-success float-end" style="width: 200px;" >Place Order</a>
+            {{else}}
+            <h3 class="text-center mt-5">Your cart is empty</h3>
+        {{/if}}
     </div>
 </section>
 
@@ -54,7 +58,17 @@
             success:(response)=>{
                 if(response.removeProduct){
                     alert("Product Removed from the cart!")
+                     // If the cart is also empty after removing the product
+                    if (response.cartEmpty) {
+                        document.querySelector('.container').innerHTML = '<h3 class="text-center mt-5">Your cart is empty</h3>';
+                        location.reload()
+                    } else {
+                        // Reload the page to refresh the cart view without the removed product
+                        location.reload();
+                    }
                     location.reload()
+                }else if(response.cartEmpty){
+                    document.querySelector('.container').innerHTML = '<h3 class="text-center mt-5">Your cart is empty</h3>';
                 }else{
                     document.getElementById(proId).innerHTML = quantity + count
                     document.getElementById('total').innerHTML = response.total
