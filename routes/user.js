@@ -4,7 +4,7 @@ var productHelpers = require('../helpers/product-helpers');
 var userHelpers = require('../helpers/user-helpers');
 const { response } = require('../app');
 const verifyLogin = (req, res, next)=>{  //session middleware
-  if(req.session.user.loggedIn){
+  if(req.session.userLoggedIn){
     next()
   } else{
     res.redirect('/login')
@@ -43,7 +43,7 @@ router.get('/signup',(req, res)=>{
 router.post('/signup', (req, res)=>{
   userHelpers.doSignup(req.body).then((response)=>{
     req.session.user = response
-    req.session.user.loggedIn = true
+    req.session.userLoggedIn = true
     res.redirect('/')
   })
 })
@@ -52,7 +52,7 @@ router.post('/login',(req, res)=>{
   userHelpers.doLogin(req.body).then((response)=>{
     if(response.status){
       req.session.user = response.user
-      req.session.user.loggedIn = true
+      req.session.userLoggedIn = true
       res.redirect('/')
     } else{
       req.session.userLoginErr = "Invalid username or password"
