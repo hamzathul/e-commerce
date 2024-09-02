@@ -297,16 +297,15 @@ module.exports = {
     },
     changePaymentStatus:(orderId)=>{
         return new Promise((resolve, reject)=>{
-            db.get().collection(collection.ORDER_COLLECTION)
-            .updateOne({_id: new objectId(orderId)},
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({_id: new objectId(orderId)},
             {
                 $set:{
                     status:'placed'
                 }
-            }.then(()=>{
+            }
+            ).then(()=>{
                 resolve()
             })
-            )
         })
     }
 }
