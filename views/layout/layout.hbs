@@ -11,6 +11,7 @@
 </head>
 
 <body>
+  <div id="preloader"></div>
 {{#if admin}}
   {{>admin-header}}
 {{else}}
@@ -18,8 +19,23 @@
 {{/if}}
 {{{body}}}
 
+<style>
+    #preloader{
+        background: #fff url("https://i.pinimg.com/originals/d7/10/52/d710529f025b042c418d1405d7265e8b.gif") no-repeat center center;
+        background-size: 30%;
+        height: 100vh;
+        width: 100%;
+        position: fixed;
+        z-index: 100;
+    }
+</style>
 
-  
+
+<script>
+$(document).ready(function(){
+$("#preloader").fadeOut();
+})
+</script>  
 <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
