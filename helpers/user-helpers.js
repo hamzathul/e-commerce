@@ -302,5 +302,25 @@ module.exports = {
                 resolve()
             })
         })
+    },
+    removeFromCart:(userId, proId)=>{
+        return new Promise(async (resolve, reject) => {
+            try {
+                // Ensure product and cart exist before attempting to remove
+                let cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: new ObjectId(userId) });
+                if (cart) {
+                    await db.get().collection(collection.CART_COLLECTION).updateOne(
+                        { user: new ObjectId(userId) },
+                        { $pull: { products: { item: new ObjectId(proId) } } }
+                    );
+                    resolve({ status: true });
+                } else {
+                    resolve({ status: false, message: 'Cart not found' });
+                }
+            } catch (error) {
+                reject(error);
+            }
+        });
     }
+    
 }

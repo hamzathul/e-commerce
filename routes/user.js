@@ -137,6 +137,21 @@ router.post('/verify-payment',(req, res)=>{
   }).catch((err)=>{
     res.json({status:false, errMsg:'Payment failed'})
   })
-})
+}),
+
+router.get('/remove-from-cart/:id', verifyLogin, (req, res) => {
+  userHelpers.removeFromCart(req.session.user._id, req.params.id).then((response) => {
+      if (response.status) {
+          res.redirect('/cart');
+      } else {
+          // Handle failure case
+          res.redirect('/cart');
+      }
+  }).catch((error) => {
+      console.error('Error removing product from cart:', error);
+      res.redirect('/cart');
+  });
+});
+
 
 module.exports = router;
