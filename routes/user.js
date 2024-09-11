@@ -74,7 +74,7 @@ router.get('/cart', verifyLogin, async(req, res)=>{
   res.render('user/cart',{products, user:req.session.user._id, totalValue})
 })
 
-router.get('/add-to-cart/:id', (req, res)=>{
+router.get('/add-to-cart/:id',verifyLogin, (req, res)=>{
   userHelpers.addToCart(req.params.id, req.session.user._id).then(()=>{
     res.json({status:true})
   })

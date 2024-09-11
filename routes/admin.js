@@ -33,9 +33,11 @@ router.post('/add-product', upload.single('image'), (req, res) => {
     product.image = req.file.filename; // Adding image filename to product object
   }
   productHelpers.addProduct(product, (result) => {
-    res.render('admin/add-product');
+    // Pass a success message to the view
+    res.render('admin/add-product', { successMessage: 'Product added successfully!' });
   });
 });
+
 
 router.get('/delete-product/:id',(req, res)=>{
   let proId = req.params.id  //to get the id from the get method
